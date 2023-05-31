@@ -1,6 +1,7 @@
 .table {
   border-collapse: collapse;
-  width: 100%;
+  width: 80vw;
+  margin-left: 1rem;
 
   th,
   td {
@@ -20,9 +21,23 @@
     width: 30px;
   }
 
+  .sort-asc::after {
+    content: " ▲";
+  }
+
+  .sort-desc::after {
+    content: " ▼";
+  }
+
+  .hd {
+    color: #282c34;
+    background-color: #61dafb;
+  }
+
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
+    width: 95vw;
 
     tr {
       display: flex;
