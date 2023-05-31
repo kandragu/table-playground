@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import logo from "./logo.svg";
-// import "./App.css";
+import Table from "./components/tables/Table";
 
 function App() {
   return (
@@ -24,6 +23,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="table" element={<TablePage />} />
 
             {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
@@ -102,5 +102,25 @@ function NoMatch() {
     </div>
   );
 }
+
+const TablePage = () => {
+  const data = [
+    { id: 1, name: "John Doe", age: 25 },
+    { id: 2, name: "Jane Smith", age: 30 },
+    { id: 3, name: "Bob Johnson", age: 35 },
+  ];
+
+  const columns = [
+    { key: "name", label: "Name" },
+    { key: "age", label: "Age" },
+  ];
+
+  return (
+    <div>
+      <h1>Table Example</h1>
+      <Table data={data} columns={columns} />
+    </div>
+  );
+};
 
 export default App;
