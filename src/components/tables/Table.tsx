@@ -6,7 +6,7 @@ interface Column {
   key: string;
   label: string;
   render?: (value: any, row: any) => React.ReactNode;
-  type?: "radio" | "checkbox" | undefined;
+  type?: "radio" | "checkbox" | "search" | undefined;
 }
 
 interface TableProps {
@@ -72,6 +72,8 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
 
   const renderCellContent = (row: any, column: Column) => {
     const { key, render, type } = column;
+
+    if (!row[key]) return null;
 
     if (render) {
       return render(row[key], row);

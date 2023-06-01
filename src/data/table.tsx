@@ -11,6 +11,17 @@ const columns = [
     label: "Services components",
     type: "checkbox" as "radio" | "checkbox" | undefined,
   },
+  {
+    key: "search",
+    label: "Search",
+    type: "search" as "radio" | "checkbox" | "search" | undefined,
+    render: (value: string, row: any) => (
+      <span>
+        <input type="search" id="site-search" name="q" />
+        <button>Search</button>
+      </span>
+    ),
+  },
 ];
 
 const users = [
@@ -20,6 +31,7 @@ const users = [
     age: 25,
     "p-type": ["pre-paid", "post-paid"],
     comp: ["mobile", "tv", "internet"],
+    search: "month",
   },
   {
     id: 2,
