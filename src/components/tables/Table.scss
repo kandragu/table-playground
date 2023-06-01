@@ -1,20 +1,68 @@
-.table {
-  border-collapse: collapse;
-  width: 80vw;
-  margin-left: 1rem;
+// Define variables and mixins
+$font-family-avenir-heavy: "Avenir Heavy", sans-serif;
+$font-family-avenir-book: "Avenir Book", sans-serif;
+$line-height: 1.75;
+$letter-spacing-header: 0;
+$letter-spacing-cell: 0.1;
 
-  th,
-  td {
-    padding: 8px;
-    border: 1px solid #ddd;
+@mixin font-size($size) {
+  @if $size == XL {
+    font-size: 20px;
+  } @else if $size == LG {
+    font-size: 20px;
+  } @else if $size == MD {
+    font-size: 18px;
+  } @else {
+    font-size: 16px;
+  }
+}
+
+.table {
+  box-shadow: 2px -2px 3px 3px #ccc;
+  border-radius: 16px;
+  margin: 4rem;
+
+  thead {
+    th:first-child {
+      border-top-left-radius: 16px;
+    }
+
+    th:last-child {
+      border-top-right-radius: 16px;
+    }
   }
 
   th {
-    background-color: #f2f2f2;
+    padding: 8px;
+    font-family: $font-family-avenir-heavy;
+    line-height: $line-height;
+    letter-spacing: $letter-spacing-header;
+
+    @include font-size(XL); // Change this to apply different font sizes
+
+    background-color: rgba($color: grey, $alpha: 0.1);
   }
 
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
+  td {
+    padding: 8px;
+    font-family: $font-family-avenir-book;
+    line-height: $line-height;
+    letter-spacing: $letter-spacing-cell;
+
+    @include font-size(XL); // Change this to apply different font sizes
+  }
+
+  tr {
+    position: relative;
+
+    &:not(:last-child):after {
+      content: "";
+      position: absolute;
+      left: 10px; // adjust this to change left padding
+      right: 10px; // adjust this to change right padding
+      bottom: 0;
+      border-bottom: 1px solid #ddd;
+    }
   }
 
   .select-column {
@@ -22,11 +70,11 @@
   }
 
   .sort-asc::after {
-    content: " ▲";
+    content: " ↑";
   }
 
   .sort-desc::after {
-    content: " ▼";
+    content: " ↓";
   }
 
   .hd {
@@ -45,12 +93,25 @@
       margin-bottom: 10px;
       border: 1px solid #ddd;
       padding: 10px;
+
+      &:not(:last-child):after {
+        content: "";
+        position: absolute;
+        left: 10px; // adjust this to change left padding
+        right: 10px; // adjust this to change right padding
+        bottom: 0;
+        border-bottom: 1px solid #ddd;
+      }
     }
 
     th,
     td {
       flex-basis: 100%;
       border: none;
+
+      @include font-size(
+        SM
+      ); // Change this to apply different font sizes for small screens
     }
 
     th {

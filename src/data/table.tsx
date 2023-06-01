@@ -47,7 +47,7 @@ const users = [
     "p-type": ["post-paid"],
     comp: ["mobile", "internet"],
   },
-  {
+  /*{
     id: 4,
     name: "Jenny Williams",
     age: 31,
@@ -95,7 +95,7 @@ const users = [
     age: 34,
     "p-type": ["pre-paid", "post-paid"],
     comp: ["tv", "internet"],
-  },
+  },*/
 ];
 
 export { columns, users };
