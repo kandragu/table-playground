@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Table from "./components/tables/Table";
+import { columns, users } from "./data/table";
 
 function App() {
   return (
@@ -104,60 +105,10 @@ function NoMatch() {
 }
 
 const TablePage = () => {
-  const columns = [
-    { key: "name", label: "Name" },
-    { key: "age", label: "Age" },
-    {
-      key: "single-select",
-      label: "Single Select",
-      type: "radio" as "radio" | "checkbox" | undefined,
-    },
-    {
-      key: "multi-select",
-      label: "Multi Select",
-      type: "checkbox" as "radio" | "checkbox" | undefined,
-    },
-  ];
-
-  const data = [
-    {
-      id: 1,
-      name: "John Doe",
-      age: 25,
-      "single-select": ["optionA", "optionB"],
-      "multi-select": ["optionA", "optionB"],
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      age: 30,
-      "single-select": ["optionA", "optionB"],
-      "multi-select": ["optionA", "optionB"],
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      age: 35,
-      "single-select": ["optionA", "optionB"],
-      "multi-select": ["optionA", "optionB"],
-    },
-  ];
-
-  // generate a more data
-  for (let i = 0; i < 10; i++) {
-    data.push({
-      id: i + 4,
-      name: `John Doe ${i}`,
-      age: 25 + i,
-      "single-select": ["optionA", "optionB"],
-      "multi-select": ["optionA", "optionB"],
-    });
-  }
-
   return (
     <div>
       <h1>Table Example</h1>
-      <Table data={data} columns={columns} />
+      <Table data={users} columns={columns} />
     </div>
   );
 };

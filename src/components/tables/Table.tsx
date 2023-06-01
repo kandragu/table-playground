@@ -15,37 +15,93 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = ({ data, columns }) => {
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRows, setSelectedRows] = useState<Record<string, any>>({});
+
   const [sortedColumn, setSortedColumn] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const handleRowSelect = (
+  const handleCheckboxSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
-    row: any
+    row: any,
+    key: string
   ) => {
-    const selectedRowIds = selectedRows.map((selectedRow) => selectedRow.id);
-    let updatedSelectedRows;
-
-    if (event.target.checked) {
-      updatedSelectedRows = [...selectedRows, row];
-    } else {
-      updatedSelectedRows = selectedRows.filter(
-        (selectedRow) => selectedRow.id !== row.id
-      );
-    }
-
-    setSelectedRows(updatedSelectedRows);
+    setSelectedRows((prevState) => ({
+      ...prevState,
+      [row.id]: {
+        ...prevState[row.id],
+        [key]: event.target.checked
+          ? [...(prevState[row.id]?.[key] || []), event.target.value]
+          : (prevState[row.id]?.[key] || []).filter(
+              (val: string) => val !== event.target.value
+            ),
+      },
+    }));
   };
 
   const handleRadioSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
-    row: any
+    row: any,
+    key: string
   ) => {
-    setSelectedRows([row]);
+    setSelectedRows((prevState) => ({
+      ...prevState,
+      [row.id]: {
+        ...prevState[row.id],
+        [key]: event.target.value,
+      },
+    }));
   };
 
-  const isRowSelected = (row: any) =>
-    selectedRows.some((selectedRow) => selectedRow.id === row.id);
+  const renderCheckboxInput = (row: any, key: string, value: string) => (
+    <input
+      type="checkbox"
+      value={value}
+      checked={selectedRows[row.id]?.[key]?.includes(value) || false}
+      onChange={(event) => handleCheckboxSelect(event, row, key)}
+    />
+  );
+
+  const renderRadioInput = (row: any, key: string, value: string) => (
+    <input
+      type="radio"
+      value={value}
+      checked={selectedRows[row.id]?.[key] === value || false}
+      onChange={(event) => handleRadioSelect(event, row, key)}
+    />
+  );
+
+  const renderCellContent = (row: any, column: Column) => {
+    const { key, render, type } = column;
+
+    if (render) {
+      return render(row[key], row);
+    }
+
+    if (type === "radio") {
+      return (
+        <fieldset style={{ display: "flex", justifyContent: "space-around" }}>
+          <legend>{key}</legend>
+          {row[key].map((item: any, idx: number) => (
+            <span key={idx}>
+              {renderRadioInput(row, key, item)}
+              <label style={{ marginLeft: "0.2em" }}>{item}</label>
+            </span>
+          ))}
+        </fieldset>
+      );
+    }
+
+    if (type === "checkbox") {
+      return row[key].map((item: any, idx: number) => (
+        <span key={idx}>
+          {renderCheckboxInput(row, key, item)}
+          <label style={{ marginLeft: "0.2em" }}>{item}</label>
+        </span>
+      ));
+    }
+
+    return row[key];
+  };
 
   const handleHeaderClick = (column: Column) => {
     if (sortedColumn === column.key) {
@@ -73,53 +129,6 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
     }
     return data;
   };
-
-  const renderCellContent = (row: any, column: Column) => {
-    const { key, render, type } = column;
-
-    if (render) {
-      return render(row[key], row);
-    }
-
-    if (type === "radio") {
-      //   console.log(row);
-
-      return renderRadioInput(row, key);
-    }
-
-    if (type === "checkbox") {
-      return renderCheckboxInput(row, key);
-    }
-
-    return row[key];
-  };
-
-  const renderRadioInput = (row: any, key: string) => (
-    <fieldset style={{ display: "flex", justifyContent: "space-around" }}>
-      <legend>{key}</legend>
-      {row[key].map((item: any, idx: number) => (
-        <span>
-          <input
-            type="radio"
-            id={`${key}-${row.id}-${idx}`}
-            name={key}
-            checked={isRowSelected(row)}
-            onChange={(event) => handleRadioSelect(event, row)}
-          />
-          <label style={{ marginLeft: "0.2em" }}>{row[key][idx]}</label>
-        </span>
-      ))}
-    </fieldset>
-  );
-
-  const renderCheckboxInput = (row: any, key: string) => (
-    <input
-      type="checkbox"
-      //   checked={isRowSelected(row)}
-      name={`${key}-${row.id}`}
-      onChange={(event) => handleRowSelect(event, row)}
-    />
-  );
 
   const renderHeader = () => (
     <tr>
