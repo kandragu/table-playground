@@ -6,6 +6,7 @@ interface Column {
   key: string;
   label: string;
   render?: (value: any, row: any) => React.ReactNode;
+  type?: "radio" | "checkbox" | undefined;
 }
 
 interface TableProps {
@@ -74,28 +75,48 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
   };
 
   const renderCellContent = (row: any, column: Column) => {
-    const { key, render } = column;
+    const { key, render, type } = column;
 
     if (render) {
       return render(row[key], row);
     }
 
+    if (type === "radio") {
+      //   console.log(row);
+
+      return renderRadioInput(row, key);
+    }
+
+    if (type === "checkbox") {
+      return renderCheckboxInput(row, key);
+    }
+
     return row[key];
   };
 
-  const renderRadioInput = (row: any) => (
-    <input
-      type="radio"
-      name="radioSelect"
-      checked={isRowSelected(row)}
-      onChange={(event) => handleRadioSelect(event, row)}
-    />
+  const renderRadioInput = (row: any, key: string) => (
+    <fieldset style={{ display: "flex", justifyContent: "space-around" }}>
+      <legend>{key}</legend>
+      {row[key].map((item: any, idx: number) => (
+        <span>
+          <input
+            type="radio"
+            id={`${key}-${row.id}-${idx}`}
+            name={key}
+            checked={isRowSelected(row)}
+            onChange={(event) => handleRadioSelect(event, row)}
+          />
+          <label style={{ marginLeft: "0.2em" }}>{row[key][idx]}</label>
+        </span>
+      ))}
+    </fieldset>
   );
 
-  const renderCheckboxInput = (row: any) => (
+  const renderCheckboxInput = (row: any, key: string) => (
     <input
       type="checkbox"
-      checked={isRowSelected(row)}
+      //   checked={isRowSelected(row)}
+      name={`${key}-${row.id}`}
       onChange={(event) => handleRowSelect(event, row)}
     />
   );
@@ -115,7 +136,6 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
           {column.label}
         </th>
       ))}
-      <th>Select</th>
     </tr>
   );
 
@@ -125,7 +145,6 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
         {columns.map((column) => (
           <td key={column.key}>{renderCellContent(row, column)}</td>
         ))}
-        <td className="select-column">{renderCheckboxInput(row)}</td>
       </tr>
     ));
 

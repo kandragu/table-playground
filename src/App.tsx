@@ -104,16 +104,55 @@ function NoMatch() {
 }
 
 const TablePage = () => {
-  const data = [
-    { id: 1, name: "John Doe", age: 25 },
-    { id: 2, name: "Jane Smith", age: 30 },
-    { id: 3, name: "Bob Johnson", age: 35 },
-  ];
-
   const columns = [
     { key: "name", label: "Name" },
     { key: "age", label: "Age" },
+    {
+      key: "single-select",
+      label: "Single Select",
+      type: "radio" as "radio" | "checkbox" | undefined,
+    },
+    {
+      key: "multi-select",
+      label: "Multi Select",
+      type: "checkbox" as "radio" | "checkbox" | undefined,
+    },
   ];
+
+  const data = [
+    {
+      id: 1,
+      name: "John Doe",
+      age: 25,
+      "single-select": ["optionA", "optionB"],
+      "multi-select": ["optionA", "optionB"],
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      age: 30,
+      "single-select": ["optionA", "optionB"],
+      "multi-select": ["optionA", "optionB"],
+    },
+    {
+      id: 3,
+      name: "Bob Johnson",
+      age: 35,
+      "single-select": ["optionA", "optionB"],
+      "multi-select": ["optionA", "optionB"],
+    },
+  ];
+
+  // generate a more data
+  for (let i = 0; i < 10; i++) {
+    data.push({
+      id: i + 4,
+      name: `John Doe ${i}`,
+      age: 25 + i,
+      "single-select": ["optionA", "optionB"],
+      "multi-select": ["optionA", "optionB"],
+    });
+  }
 
   return (
     <div>
