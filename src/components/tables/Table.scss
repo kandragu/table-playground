@@ -17,10 +17,11 @@ $letter-spacing-cell: 0.1;
   }
 }
 
-.table {
+table {
   box-shadow: 2px -2px 3px 3px #ccc;
   border-radius: 16px;
   margin: 4rem;
+  border-spacing: 0;
 
   thead {
     th:first-child {
@@ -33,10 +34,11 @@ $letter-spacing-cell: 0.1;
   }
 
   th {
-    padding: 8px;
+    padding: 24px;
     font-family: $font-family-avenir-heavy;
     line-height: $line-height;
     letter-spacing: $letter-spacing-header;
+    cursor: pointer;
 
     @include font-size(XL); // Change this to apply different font sizes
 
@@ -44,7 +46,7 @@ $letter-spacing-cell: 0.1;
   }
 
   td {
-    padding: 8px;
+    padding: 24px;
     font-family: $font-family-avenir-book;
     line-height: $line-height;
     letter-spacing: $letter-spacing-cell;

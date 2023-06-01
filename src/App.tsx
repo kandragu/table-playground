@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Table from "./components/tables/Table";
-import { columns, users } from "./data/table";
+import { columns, data } from "./data/table";
 
 function App() {
   return (
@@ -108,7 +108,7 @@ const TablePage = () => {
   return (
     <div>
       <h1>Table Example</h1>
-      <Table data={users} columns={columns} />
+      <Table data={data} columns={columns} />
     </div>
   );
 };
