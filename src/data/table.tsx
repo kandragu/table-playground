@@ -5,27 +5,6 @@ const columns = [
   { key: "penalty", label: "Penalty" },
 ];
 
-/*
-Mavis Chen
-8899 7654
-Dec 2022
-$600
-
-Rodney Artichoke
-9988 7676
-Dec 2022
-$300
-
-Valentino Morose
-8900 7654
-Dec 2022
-$300
-
-Eric Widget
-8900 7654
-Dec 2022
-$300 */
-
 const data = [
   {
     id: 1,

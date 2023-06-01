@@ -108,7 +108,7 @@ const TablePage = () => {
   return (
     <div>
       <h1>Table Example</h1>
-      <Table data={data} columns={columns} />
+      <Table data={data} columns={columns} checkbox />
     </div>
   );
 };

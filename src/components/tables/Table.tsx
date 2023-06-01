@@ -12,19 +12,26 @@ interface Column {
 interface TableProps {
   data: any[];
   columns: Column[];
+  radio?: boolean;
+  checkbox?: boolean;
 }
 
-const Table: React.FC<TableProps> = ({ data, columns }) => {
-  //   const [selectedRows, setSelectedRows] = useState<number[]>;
+const Table: React.FC<TableProps> = ({ data, columns, radio, checkbox }) => {
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   const [sortedColumn, setSortedColumn] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const handleCheckboxSelect = (
     event: React.ChangeEvent<HTMLInputElement>,
-    row: any,
-    key: string
-  ) => {};
+    row: any
+  ) => {
+    if (event.target.checked) {
+      setSelectedRows([...(selectedRows as string[]), row.id]);
+    } else {
+      setSelectedRows((selectedRows as string[]).filter((id) => id !== row.id));
+    }
+  };
 
   const renderCellContent = (row: any, column: Column) => {
     const { key, render, type } = column;
@@ -34,6 +41,11 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
     if (render) {
       return render(row[key], row);
     }
+
+    //check if row.id is in selectedRows
+    // if (selectedRows?.includes(row.id)) {
+    //   return <span className="selected">{row[key]}</span>;
+    // }
 
     return row[key];
   };
@@ -67,6 +79,7 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
 
   const renderHeader = () => (
     <tr>
+      {radio || checkbox ? <th></th> : null}
       {columns.map((column) => (
         <th
           key={column.key}
@@ -83,9 +96,42 @@ const Table: React.FC<TableProps> = ({ data, columns }) => {
     </tr>
   );
 
+  const renderSelectionButon = (row: any) => {
+    if (radio) {
+      return (
+        <td>
+          <input
+            type="radio"
+            id={row.id}
+            checked={selectedRows?.includes(row.id)}
+            onChange={() => setSelectedRows([row.id])}
+          />
+        </td>
+      );
+    } else if (checkbox) {
+      return (
+        <td>
+          <input
+            type="checkbox"
+            id={row.id}
+            onChange={(event) => handleCheckboxSelect(event, row)}
+          />
+        </td>
+      );
+    } else {
+      return null;
+    }
+  };
+
   const renderRows = () =>
     sortData(data).map((row) => (
-      <tr key={row.id}>
+      <tr
+        key={row.id}
+        className={classNames({
+          "selected-row": selectedRows?.includes(row.id),
+        })}
+      >
+        {renderSelectionButon(row)}
         {columns.map((column) => (
           <td key={column.key}>{renderCellContent(row, column)}</td>
         ))}

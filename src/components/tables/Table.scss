@@ -79,9 +79,8 @@ table {
     content: " ↓";
   }
 
-  .hd {
-    color: #282c34;
-    background-color: #61dafb;
+  .selected-row {
+    background-color: #efedfd;
   }
 
   @media (max-width: 768px) {
