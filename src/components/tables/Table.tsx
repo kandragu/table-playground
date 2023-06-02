@@ -103,6 +103,7 @@ const Table: React.FC<TableProps> = ({ data, columns, radio, checkbox }) => {
           <input
             type="radio"
             id={row.id}
+            className={"selectionBtn"}
             checked={selectedRows?.includes(row.id)}
             onChange={() => setSelectedRows([row.id])}
           />
@@ -113,6 +114,7 @@ const Table: React.FC<TableProps> = ({ data, columns, radio, checkbox }) => {
         <td>
           <input
             type="checkbox"
+            className={"selectionBtn"}
             id={row.id}
             onChange={(event) => handleCheckboxSelect(event, row)}
           />
@@ -139,10 +141,13 @@ const Table: React.FC<TableProps> = ({ data, columns, radio, checkbox }) => {
     ));
 
   return (
-    <table className="table">
-      <thead>{renderHeader()}</thead>
-      <tbody>{renderRows()}</tbody>
-    </table>
+    <>
+      <div className="mobile-header">Contact details</div>
+      <table className="table">
+        <thead>{renderHeader()}</thead>
+        <tbody>{renderRows()}</tbody>
+      </table>
+    </>
   );
 };
 
